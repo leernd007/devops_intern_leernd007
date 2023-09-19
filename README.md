@@ -1,7 +1,7 @@
 ```
-docker build -t devops_intern_leernd007_image --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" .
+docker build  --progress=plain  -t devops_intern_leernd007_image .
 ```
 
 ```
-docker run -v $(pwd)/backup:/root/backup devops_intern_leernd007_image 3
+docker run -v $(pwd)/backup:/root/backup --env ssh_prv_key="$(cat ~/.ssh/id_rsa)" devops_intern_leernd007_image 3
 ```

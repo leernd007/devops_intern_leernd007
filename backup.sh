@@ -21,15 +21,20 @@ else
   input_string="$archiveName"
   if [[ $input_string =~ devops_internship_(.*?)\.tar\.gz ]]; then
       version="${BASH_REMATCH[1]}"
-      version=$(echo "$version" | awk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{if(length($NF+1)>length($NF))$(NF-1)++; $NF=sprintf("%0*d", length($NF), ($NF+1)%(10^length($NF))); print}')
+      version=$(echo "$version" | gawk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{if(length($NF+1)>length($NF))$(NF-1)++; $NF=sprintf("%0*d", length($NF), ($NF+1)%(10^length($NF))); print}')
       archiveName="devops_internship_$version.tar.gz"
   fi
 fi
 repo_name="devops_intern_leernd007"
+
+echo "$ssh_prv_key" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan github.com >> ~/.ssh/known_hosts
+git clone git@github.com:leernd007/$repo_name.git
+rm ~/.ssh/id_rsa
+
 cd $SCRIPT_DIR/$repo_name && tar --exclude=".git" -czvf "$archiveName" .
 mv $SCRIPT_DIR/$repo_name/$archiveName ~/$BACKUP_FOLDER
 file_size=$(stat -c %s ~/$BACKUP_FOLDER/$archiveName)
-
+rm -rf $repo_name
 echo "[
   {
      "version": "$version",
@@ -38,5 +43,3 @@ echo "[
      "filename": "${archiveName%%.tar.gz}"
   }
 ]" > ~/$BACKUP_FOLDER/versions.json
-echo "------"
-ls ~/backup
