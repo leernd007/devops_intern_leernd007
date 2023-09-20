@@ -8,7 +8,7 @@ RUN apk update \
           && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /app
-COPY . .
+COPY ./backup.sh .
 
 RUN mkdir -p ~/.ssh
 
