@@ -7,12 +7,14 @@ mkdir -p ~/$BACKUP_FOLDER
 
 repo_name="devops_intern_leernd007"
 
+versions=~/$BACKUP_FOLDER/versions.json
+
 get_archiveVersion() {
-  if [[ ! -f ~/$BACKUP_FOLDER/versions.json ]]; then
-    echo "[]" > ~/$BACKUP_FOLDER/versions.json
+  if [[ ! -f $versions ]]; then
+    echo "[]" > $versions
   fi
 
-  version=$(jq '.[-1].version' ~/$BACKUP_FOLDER/versions.json)
+  version=$(jq '.[-1].version' $versions)
   if [[  "$version" == null ]]; then
     version="1.0.0"
   else
@@ -39,7 +41,7 @@ create_archive() {
        "date": $date,
        "size": $size,
        "filename": $filename
-     }]' ~/$BACKUP_FOLDER/versions.json > tmpfile && mv tmpfile ~/$BACKUP_FOLDER/versions.json
+     }]' $versions > tmpfile && mv tmpfile $versions
 }
 
 echo "$SSH_PRV_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan github.com >> ~/.ssh/known_hosts
