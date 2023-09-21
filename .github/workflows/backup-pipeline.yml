@@ -26,17 +26,17 @@ jobs:
       - name: Run backup execution
         run: ./backup.sh
 
-      - name: Download Previous Artifact
-        uses: actions/download-artifact@v2
-        continue-on-error: true
-        with:
-          name: backup-artifact
-          path: backup
-
-      - name: Copy Files from Previous Artifact
-        continue-on-error: true
-        run: |
-          cp -r backup-artifact/*.tar.gz ~/backup/
+#      - name: Download Previous Artifact
+#        uses: actions/download-artifact@v2
+#        continue-on-error: true
+#        with:
+#          name: backup-artifact
+#          path: backup
+#
+#      - name: Copy Files from Previous Artifact
+#        continue-on-error: true
+#        run: |
+#          cp -r backup-artifact/*.tar.gz ~/backup/
 
       - name: Build Docker Image
         run: |
