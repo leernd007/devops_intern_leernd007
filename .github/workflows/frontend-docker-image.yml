@@ -1,0 +1,52 @@
+name: FRONTEND CI
+
+on:
+  push:
+    branches: [ "DO_3" ]
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches: [ "DO_3" ]
+    paths:
+      - 'frontend/**'
+defaults:
+  run:
+    working-directory: ./frontend
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install Chromium Browser
+        run: |
+          sudo apt update
+          sudo apt install -y chromium-browser
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Lint Check
+        run: |
+          npm run lint
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm run test:ci
+      - name: Build Docker Image
+        run: |
+          docker build -t fe_devops:latest .
+
+      - name: Save Docker Image as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-docker-image-${{ github.run_id }}
+          path: .
+          retention-days: 1
