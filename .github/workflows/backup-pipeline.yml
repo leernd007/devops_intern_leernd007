@@ -45,9 +45,9 @@ jobs:
         run: |
           cp -r backup-artifact/*.tar.gz ~/backup/
 
-      - name: Build Docker Image
-        run: |
-          docker build -t backup_devops:latest .
+#      - name: Build Docker Image
+#        run: |
+#          docker build -t backup_devops:latest .
 
       - name: Save Docker Image as Artifact
         uses: actions/upload-artifact@v2
