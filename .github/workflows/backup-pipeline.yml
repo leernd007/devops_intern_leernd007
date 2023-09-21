@@ -20,8 +20,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: continue-on-error Comment
-        uses: mainmatter/continue-on-error-comment@v1
+#      - name: continue-on-error Comment
+#        uses: mainmatter/continue-on-error-comment@v1
 
       - name: Retrieve Cache
         uses: actions/cache@v3
@@ -30,10 +30,10 @@ jobs:
           key: ${{ runner.os }}-my-cache
 
       - name: Copy Files from Previous Artifact
-        continue-on-error: true
         run: |
           mkdir -p ~/tmp-backup
           cp -r ~/backup/*.tar.gz ~/tmp-backup/
+          ls ~/tmp-backup/
 
       - name: Run backup execution
         run: ./backup.sh
@@ -41,9 +41,9 @@ jobs:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
       - name: Copy Files from Previous Artifact v2
-        continue-on-error: true
         run: |
           cp -r ~/tmp-backup/*.tar.gz ~/backup/
+          ls ~/tmp-backup/
           rm -rf ~/tmp-backup
 
       - name: Save Cache
@@ -51,7 +51,6 @@ jobs:
         with:
           path: ~/backup
           key: ${{ runner.os }}-my-cache
-
 
       - name: Build Docker Image
         run: |
