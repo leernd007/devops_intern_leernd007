@@ -31,7 +31,7 @@ jobs:
       - name: Show PRV KET
         run: |
           echo "${{ secrets.SSH_PRV_KEY }}" > ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa
+          ls ~/.ssh
 
 
       - name: Download Previous Artifact
