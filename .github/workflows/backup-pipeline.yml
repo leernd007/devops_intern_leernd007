@@ -23,13 +23,21 @@ jobs:
       - name: Run backup execution
         run: ./backup.sh
 
+      - name: Check artifact existence
+        uses: xSAVIKx/artifact-exists-action@v0
+        id: check_coverage_artifact
+        with:
+          name: 'backup-artifact'
+
       - name: Download Previous Artifact
+        if: steps.check_coverage_artifact.outputs.exists
         uses: actions/download-artifact@v2
         with:
           name: backup-artifact
           path: backup
 
       - name: Copy Files from Previous Artifact
+        if: steps.check_coverage_artifact.outputs.exists
         run: |
           cp -r backup-artifact/*.tar.gz ~/backup/
 
