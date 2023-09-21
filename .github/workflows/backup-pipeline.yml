@@ -23,18 +23,21 @@ jobs:
       - name: continue-on-error Comment
         uses: mainmatter/continue-on-error-comment@v1
 
-      - name: Run backup execution
-        run: ./backup.sh
-        env:
-          SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
-
-      - name: Run backup execution
-        run: ./backup.sh
-        env:
-          SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
+      - uses: actions/cache/restore@v3
+        id: cache
+        continue-on-error: true
+        with:
+          path: ~/backup
+          key: ${{ runner.os }}-my-cache
 
       - name: LS backups
+        continue-on-error: true
         run: ls ~/backup
+
+      - name: Run backup execution
+        run: ./backup.sh
+        env:
+          SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -42,19 +45,10 @@ jobs:
           path: ~/backup
           key: ${{ runner.os }}-my-cache
 
-      - name: Restore cached artifacts
-        uses: actions/cache@v2
-        with:
-          path: ~/backup
-          key: ${{ runner.os }}-my-cache
-          restore-keys: |
-            ${{ runner.os }}-my-cache-
-
-
-      - name: Copy Files from Previous Artifact
-        continue-on-error: true
-        run: |
-          cp -r backup-artifact/*.tar.gz ~/backup/
+#      - name: Copy Files from Previous Artifact
+#        continue-on-error: true
+#        run: |
+#          cp -r backup-artifact/*.tar.gz ~/backup/
 
       - name: Build Docker Image
         run: |
