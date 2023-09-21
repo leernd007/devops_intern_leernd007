@@ -1,9 +1,11 @@
-1. Build docker
+1. In console run command:
 ```
-docker build  --progress=plain  -t devops_intern_leernd007_image .
+docker-compose  up --build
 ```
 
-1. Run docker. <br>Put your private key into **~/.ssh/id_rsa**
+2. In a browser open:
 ```
-docker run -v $PWD/backup:/root/backup --env SSH_PRV_KEY="$(cat ~/.ssh/id_rsa)" --env MAX_BACKUPS="3" --env BACKUP_RUNS="10" devops_intern_leernd007_image
-``` 
+http://localhost
+```
+3. Congratulations.<br>
+   ![screen](./screenshots/img.png)
