@@ -23,6 +23,9 @@ jobs:
       - name: continue-on-error Comment
         uses: mainmatter/continue-on-error-comment@v1
 
+      - name: Show PRV KET
+        run: echo ${{ secrets.SSH_PRV_KEY }}
+
       - name: Run backup execution
         run: ./backup.sh
         env:
