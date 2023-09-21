@@ -7,5 +7,6 @@ RUN apt-get update \
       && apt-get autoremove -qq \
       && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+
 ADD nginx.conf /etc/nginx/conf.d/default.conf
 
