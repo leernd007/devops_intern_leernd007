@@ -44,7 +44,7 @@ create_archive() {
      }]' $versions > tmpfile && mv tmpfile $versions
 }
 
-echo "$SSH_PRV_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan github.com >> ~/.ssh/known_hosts
+mkdir -p ~/.ssh && echo "$SSH_PRV_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan github.com >> ~/.ssh/known_hosts
 git clone git@github.com:leernd007/$repo_name.git
 rm ~/.ssh/id_rsa
 
