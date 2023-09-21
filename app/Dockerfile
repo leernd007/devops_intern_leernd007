@@ -1,6 +1,5 @@
 FROM python:3.11 as BASE_IMAGE
 
-
 WORKDIR /app
 
 COPY . .
