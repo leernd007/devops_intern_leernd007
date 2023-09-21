@@ -4,26 +4,19 @@ services:
   postgres:
     image: postgres:11
     container_name: postgres
-    environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+    env_file: .env
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
-      - ~/pg_data:/var/lib/postgresql/data
+      - "./pg_data:/var/lib/postgresql/data"
+
   backend:
     build:
       context: app
     container_name: backend
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
-    environment:
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_ENDPOINT=${DB_ENDPOINT}
-      - POSTGRES_HOST_AUTH_METHOD=${POSTGRES_HOST_AUTH_METHOD}
+    env_file: .env
     depends_on:
       - postgres
   frontend:
@@ -34,7 +27,6 @@ services:
       - "${FRONTEND_PORT}:${NGINX_PORT}"
     depends_on:
       - backend
-
   nginx:
     container_name: nginx
     build:
