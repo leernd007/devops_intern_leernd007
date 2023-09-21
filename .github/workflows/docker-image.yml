@@ -28,8 +28,8 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Install Flake8 & Pytest & Httpx
-        run: pip install flake8 pytest httpx
+      - name: Install Test Tools
+        run: pip install flake8 pytest httpx pytest-mock
 
       - name: Lint with flake8
         run: flake8 .
