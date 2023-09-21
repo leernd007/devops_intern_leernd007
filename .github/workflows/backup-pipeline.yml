@@ -29,7 +29,9 @@ jobs:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
       - name: Show PRV KET
-        run: cat ~/.ssh/id_rsa
+        run: |
+          echo ${{ secrets.SSH_PRV_KEY }} > ~/.ssh/id_rsa
+          cat ~/.ssh/id_rsa
 
 
       - name: Download Previous Artifact
