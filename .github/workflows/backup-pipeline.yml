@@ -13,8 +13,6 @@ on:
       - 'frontend/**'
       - 'nginx/**'
       - '.github/workflows/**'
-defaults:
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
