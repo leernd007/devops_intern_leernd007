@@ -1,6 +1,5 @@
 FROM node:18-alpine as BASE_IMAGE
 
-
 WORKDIR /app
 
 COPY . .
