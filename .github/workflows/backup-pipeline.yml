@@ -30,6 +30,7 @@ jobs:
         with:
           name: backup-artifact
           path: backup
+        working-directory: ${{ github.workspace }}
 
       - name: Copy Files from Previous Artifact
         run: |
