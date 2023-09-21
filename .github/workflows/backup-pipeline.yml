@@ -28,12 +28,10 @@ jobs:
         with:
           name: backup-artifact
           path: backup
-        workflow: BACKUP CI
 
       - name: Copy Files from Previous Artifact
         run: |
           cp -r backup-artifact/*.tar.gz ~/backup/
-        workflow: BACKUP CI
 
       - name: Build Docker Image
         run: |
