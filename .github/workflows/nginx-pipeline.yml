@@ -1,0 +1,29 @@
+name: NGINX CI
+
+on:
+  push:
+    paths:
+      - 'nginx/**'
+  pull_request:
+    paths:
+      - 'nginx/**'
+defaults:
+  run:
+    working-directory: ./nginx
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: |
+          docker build -t nginx_devops:latest .
+
+      - name: Save Docker Image as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: nginx-docker-image-${{ github.run_id }}
+          path: nginx
+          retention-days: 1

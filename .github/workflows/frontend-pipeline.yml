@@ -2,11 +2,9 @@ name: FRONTEND CI
 
 on:
   push:
-    branches: [ "DO_3" ]
     paths:
       - 'frontend/**'
   pull_request:
-    branches: [ "DO_3" ]
     paths:
       - 'frontend/**'
 defaults:

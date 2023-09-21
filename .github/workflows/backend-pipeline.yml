@@ -2,11 +2,9 @@ name: Backend CI
 
 on:
   push:
-    branches: [ "DO_3" ]
     paths:
       - 'app/**'
   pull_request:
-    branches: [ "DO_3" ]
     paths:
       - 'app/**'
 defaults:
