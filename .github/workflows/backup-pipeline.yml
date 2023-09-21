@@ -23,7 +23,6 @@ jobs:
       - name: continue-on-error Comment
         uses: mainmatter/continue-on-error-comment@v1
 
-      - name: Build Docker Image
       - name: Run backup execution
         run: ./backup.sh
         env:
