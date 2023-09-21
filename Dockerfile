@@ -10,6 +10,7 @@ RUN apk update \
 WORKDIR /app
 COPY ./backup.sh .
 
+
 RUN mkdir -p ~/.ssh
 
 CMD ["./backup.sh"]
