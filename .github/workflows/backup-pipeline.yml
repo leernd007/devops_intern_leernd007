@@ -29,14 +29,22 @@ jobs:
           path: ~/backup
           key: ${{ runner.os }}-my-cache
 
-      - name: LS backups
+      - name: Copy Files from Previous Artifact
         continue-on-error: true
-        run: ls ~/backup
+        run: |
+          mkdir -p ~/tmp-backup
+          cp -r ~/backup/*.tar.gz ~/tmp-backup/
 
       - name: Run backup execution
         run: ./backup.sh
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
+
+      - name: Copy Files from Previous Artifact v2
+        continue-on-error: true
+        run: |
+          cp -r ~/tmp-backup/*.tar.gz ~/backup/
+          rm -rf ~/tmp-backup
 
       - name: Save Cache
         uses: actions/cache@v3
@@ -44,10 +52,6 @@ jobs:
           path: ~/backup
           key: ${{ runner.os }}-my-cache
 
-#      - name: Copy Files from Previous Artifact
-#        continue-on-error: true
-#        run: |
-#          cp -r backup-artifact/*.tar.gz ~/backup/
 
       - name: Build Docker Image
         run: |
