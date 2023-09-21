@@ -1,0 +1,48 @@
+name: BACKUP CI
+
+on:
+  push:
+    paths-ignore:
+      - 'app/**'
+      - 'frontend/**'
+      - 'nginx/**'
+      - '.github/workflows/**'
+  pull_request:
+    paths-ignore:
+      - 'app/**'
+      - 'frontend/**'
+      - 'nginx/**'
+      - '.github/workflows/**'
+defaults:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Run backup execution
+        run: ./backup.sh
+
+      - name: Download Previous Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: backup-artifact
+          path: backup
+
+      - name: Copy Files from Previous Artifact
+        run: |
+          cp -r backup-artifact/*.tar.gz ~/backup/
+        working-directory: ${{ github.workspace }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t backup_devops:latest .
+
+      - name: Save Docker Image as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: backup-artifact
+          path: backup
+          retention-days: 5
