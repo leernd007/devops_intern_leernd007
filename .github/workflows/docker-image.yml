@@ -47,7 +47,6 @@ jobs:
       - name: Save Docker Image as Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: docker-image
+          name: backend-docker-image-${{ github.run_id }}
           path: .
-        env:
-          ARTIFACTS_RETENTION_DAYS: 1
+        retention-days: 1
