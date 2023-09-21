@@ -1,4 +1,4 @@
-<h3>DO_1<h3>
+<h3>DO_1</h3>
 1.Build docker<br>
 ```
 docker build  --progress=plain  -t devops_intern_leernd007_image .
@@ -9,7 +9,7 @@ docker build  --progress=plain  -t devops_intern_leernd007_image .
 docker run -v $PWD/backup:/root/backup --env SSH_PRV_KEY="$(cat ~/.ssh/id_rsa)" --env MAX_BACKUPS="3" --env BACKUP_RUNS="10" devops_intern_leernd007_image
 ``` 
 
-<h3>DO_2<h3>
+<h3>DO_2</h3>
 1.In console run command:<br>
 ```
 docker-compose  up --build
