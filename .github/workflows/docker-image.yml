@@ -9,7 +9,9 @@ on:
     branches: [ "DO_3" ]
     paths:
       - 'app/**'
-
+defaults:
+  run:
+    working-directory: ./app
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -17,12 +19,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -33,7 +29,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Lint with flake8
-        run: flake8 app
+        run: flake8 .
 
       - name: Run Tests
         run: pytest tests/
@@ -44,7 +40,6 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t be_devops:latest .
-        working-directory: ./app
 
       - name: Save Docker Image as Artifact
         uses: actions/upload-artifact@v2
