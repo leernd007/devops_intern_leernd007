@@ -28,9 +28,13 @@ jobs:
         id: restore-build
         continue-on-error: true
         with:
-          path: ~/backup
+          path: ~/versions.json
           key: ${{ runner.os }}-my-cache
-      - run: cat ~/backup/versions.json
+      - run: |
+          if [ -f ~/versions.json ]; then
+            mkdir -p ~/backup
+            mv ~/versions.json ~/backup/versions.json
+          fi
 
 #      - name: Retrieve Cache
 #        uses: actions/cache@v3
@@ -54,22 +58,20 @@ jobs:
 #          cp -r ~/tmp-backup/*.tar.gz ~/backup/
 #          ls ~/tmp-backup/
 #          rm -rf ~/tmp-backup
+      - name: Copy versions.json
+        run: cp -r ~/backup/versions.json ~/versions.json
 
       - name: Save Cache
         uses: actions/cache@v3
         with:
-          path: ~/backup/versions.json
+          path: ~/versions.json
           key: ${{ runner.os }}-my-cache
-
-      - name: Build Docker Image
-        run: |
-          docker build -t backup_devops:latest .
 
       - name: Save Docker Image as Artifact
         uses: actions/upload-artifact@v2
         with:
           name: backup-artifact
-          path: ~/backup
+          path: ~/backup/*tar.gz
           retention-days: 5
 
       - name: Save versions.json as Artifact
