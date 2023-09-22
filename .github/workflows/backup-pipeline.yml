@@ -2,17 +2,7 @@ name: BACKUP CI
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - 'app/**'
-      - 'frontend/**'
-      - 'nginx/**'
-      - '.github/workflows/**'
   pull_request:
-    paths-ignore:
-      - 'app/**'
-      - 'frontend/**'
-      - 'nginx/**'
-      - '.github/workflows/**'
 jobs:
   backup:
     runs-on: ubuntu-latest
