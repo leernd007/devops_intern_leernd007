@@ -35,9 +35,9 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: nginx_devops
-          path: ~/
+          path: ~/nginx_devops.tar
       - uses: actions/upload-artifact@v2
         with:
           name: nginx_devops
-          path: ~/
+          path: ~/nginx_devops.tar
           retention-days: 1
