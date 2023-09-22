@@ -36,8 +36,10 @@ jobs:
 
       - name: Update versions.json
         run: |
-          mkdir -p ~/backup
-          mv versions.json ~/backup
+          if [ -f versions.json ]; then
+            mkdir -p ~/backup
+            mv versions.json ~/backup
+          fi
 
       - name: Run backup execution
         run: ./backup.sh
