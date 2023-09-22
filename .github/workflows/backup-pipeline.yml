@@ -26,10 +26,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: continue-on-error Comment
-        uses: mainmatter/continue-on-error-comment@v1
-#        continue-on-error: true
-
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -41,7 +37,6 @@ jobs:
         run: |
           mkdir -p ~/backup
           mv versions.json ~/backup
-          cat ~/backup/versions.json
 
       - name: Run backup execution
         run: ./backup.sh
