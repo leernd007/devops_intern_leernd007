@@ -16,6 +16,11 @@ on:
 jobs:
   backup:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      actions: read
     steps:
       - uses: actions/checkout@v2
       - uses: dawidd6/action-download-artifact@v2
