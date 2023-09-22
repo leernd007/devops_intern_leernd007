@@ -68,6 +68,8 @@ jobs:
         with:
           path: ~/versions.json
           key: ${{ runner.os }}-my-cache
+
+      - name: cat version
         run: cat ~/backup/versions.json
 
       - name: Save Docker Image as Artifact
