@@ -31,6 +31,7 @@ jobs:
           if_no_artifact_found: warn
   update:
     runs-on: ubuntu-latest
+    needs: download
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -40,6 +41,7 @@ jobs:
           fi
   run:
     runs-on: ubuntu-latest
+    needs: update
     steps:
       - uses: actions/checkout@v2
       - run: ./backup.sh
@@ -47,6 +49,7 @@ jobs:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
   save:
     runs-on: ubuntu-latest
+    needs: run
     steps:
       - uses: actions/checkout@v2
       - uses: actions/upload-artifact@v2
