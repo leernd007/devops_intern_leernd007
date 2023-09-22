@@ -28,9 +28,11 @@ jobs:
         id: restore-build
         continue-on-error: true
         with:
-          path: ~/
-          key: ${{ runner.os }}-my-cache-${{ hashFiles('versions.json') }}
+          path: ~/versions.json
+          key: ${{ runner.os }}-my-cache-${{ hashFiles('~/versions.json') }}
       - run: |
+          ls
+          pwd
           if [ -f ~/versions.json ]; then
             cat ~/versions.json
             mkdir -p ~/backup
@@ -67,8 +69,8 @@ jobs:
       - name: Save Cache
         uses: actions/cache@v3
         with:
-          path: ~/
-          key: ${{ runner.os }}-my-cache-${{ hashFiles('versions.json') }}
+          path: ~/versions.json
+          key: ${{ runner.os }}-my-cache-${{ hashFiles('~/versions.json') }}
 
       - name: cat version
         run: cat ~/backup/versions.json
