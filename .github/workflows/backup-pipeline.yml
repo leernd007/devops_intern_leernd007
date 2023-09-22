@@ -1,6 +1,10 @@
 name: BACKUP CI
 
 on:
+  workflow_run:
+    workflows: [ "BACKUP CI" ]  # Specify the name of the workflow you depend on
+    types:
+      - completed
   workflow_dispatch:
   push:
     paths-ignore:
