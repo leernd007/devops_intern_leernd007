@@ -1,6 +1,11 @@
 name: BACKUP CI
 
 on:
+  permissions:
+    id-token: write
+    contents: read
+    pull-requests: write
+    actions: read
   workflow_dispatch:
   push:
     paths-ignore:
