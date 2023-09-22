@@ -32,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-my-cache
       - run: |
           if [ -f ~/versions.json ]; then
-            cat ~/backup/versions.json
+            cat ~/versions.json
             mkdir -p ~/backup
             mv ~/versions.json ~/backup/versions.json
           fi
