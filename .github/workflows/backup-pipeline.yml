@@ -69,10 +69,10 @@ jobs:
         with:
           path: ~/versions.json
           key: ${{ runner.os }}-my-cache-${{ hashFiles('versions.json') }}
-        restore-keys: |
-          ${{ runner.os }}-my-cache-${{ hashFiles('versions.json') }}-
-          ${{ runner.os }}-my-cache-
-          ${{ runner.os }}-
+          restore-keys: |
+            ${{ runner.os }}-my-cache-${{ hashFiles('versions.json') }}-
+            ${{ runner.os }}-my-cache-
+            ${{ runner.os }}-
 
       - name: cat version
         run: cat ~/backup/versions.json
