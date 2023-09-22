@@ -28,19 +28,19 @@ http://localhost
 <h3>DO_3</h3>
 
 1. Run workflow manually<br>
-   1.1 RUN **BACKUP CI**
+   1.1 Run **BACKUP CI**
    ```
    gh workflow run "BACKUP CI" --ref <branch_name>
    ```
-   1.2 RUN **BACKEND CI**
+   1.2 Run **BACKEND CI**
    ```
    gh workflow run "BACKEND CI" --ref <branch_name>
    ```
-   1.3 RUN **NGINX CI**
+   1.3 Run **NGINX CI**
    ```
    gh workflow run "NGINX CI" --ref <branch_name>
    ```
-   1.3 RUN **FRONTEND CI**
+   1.3 Run **FRONTEND CI**
    ```
    gh workflow run "FRONTEND CI" --ref <branch_name>
    ```
