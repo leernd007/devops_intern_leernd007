@@ -34,7 +34,6 @@ jobs:
           if [ -f ~/versions.json ]; then
             mkdir -p ~/backup
             mv ~/versions.json ~/backup/versions.json
-            cat ~/backup/versions.json
           fi
 
 #      - name: Retrieve Cache
@@ -60,13 +59,16 @@ jobs:
 #          ls ~/tmp-backup/
 #          rm -rf ~/tmp-backup
       - name: Copy versions.json
-        run: cp -rf ~/backup/versions.json ~/versions.json
+        run: |
+          cp -rf ~/backup/versions.json ~/versions.json
+          cat ~/backup/versions.json
 
       - name: Save Cache
         uses: actions/cache@v3
         with:
           path: ~/versions.json
           key: ${{ runner.os }}-my-cache
+        run: cat ~/backup/versions.json
 
       - name: Save Docker Image as Artifact
         uses: actions/upload-artifact@v2
