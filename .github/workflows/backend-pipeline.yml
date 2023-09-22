@@ -39,5 +39,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: backend-docker-image-${{ github.run_id }}
-          path: app
+          path: .
           retention-days: 1
