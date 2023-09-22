@@ -15,11 +15,6 @@ on:
       - 'nginx/**'
       - '.github/workflows/**'
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "We did it"
   build-and-test:
     runs-on: ubuntu-latest
     steps:
