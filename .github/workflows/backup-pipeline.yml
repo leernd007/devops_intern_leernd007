@@ -37,12 +37,11 @@ jobs:
           workflow_conclusion: success
           name: versions-artifact
 
-      - name: Ls
+      - name: Update versions.json
         run: |
-          ls 
-          echo aaaaa
-          ls ~/
-          pwd
+          mkdir -p ~/backup
+          mv versions.txt ~/backup
+          cat ~/backup/versions.txt
 
       - name: Run backup execution
         run: ./backup.sh
