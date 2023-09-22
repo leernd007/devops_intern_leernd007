@@ -59,7 +59,7 @@ jobs:
 #          ls ~/tmp-backup/
 #          rm -rf ~/tmp-backup
       - name: Copy versions.json
-        run: cp -r ~/backup/versions.json ~/versions.json
+        run: cp -rf ~/backup/versions.json ~/versions.json
 
       - name: Save Cache
         uses: actions/cache@v3
