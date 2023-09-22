@@ -34,6 +34,7 @@ jobs:
           if [ -f ~/versions.json ]; then
             mkdir -p ~/backup
             mv ~/versions.json ~/backup/versions.json
+            cat ~/backup/versions.json
           fi
 
 #      - name: Retrieve Cache
