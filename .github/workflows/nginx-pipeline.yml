@@ -23,6 +23,9 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
+      - uses: ishworkh/container-image-artifact-download@v1.0.0
+        with:
+          image: "nginx_devops:latest"
       - uses: ishworkh/container-image-artifact-upload@v1.0.0
         with:
           image: "nginx_devops:latest"
