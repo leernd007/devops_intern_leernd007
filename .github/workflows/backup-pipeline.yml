@@ -30,6 +30,7 @@ jobs:
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           workflow_conclusion: success
+          name: versions-artifact
 
       - name: Ls
         run: |
