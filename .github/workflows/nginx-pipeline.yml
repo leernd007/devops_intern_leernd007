@@ -1,6 +1,7 @@
 name: NGINX CI
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'nginx/**'

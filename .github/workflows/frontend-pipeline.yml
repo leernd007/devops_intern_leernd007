@@ -1,6 +1,7 @@
 name: FRONTEND CI
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'frontend/**'

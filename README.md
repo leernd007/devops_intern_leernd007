@@ -23,3 +23,24 @@ http://localhost
 ```
 3. Congratulations.<br>
    ![screen](./screenshots/img.png)
+
+
+<h3>DO_3</h3>
+
+1. Run workflow manually<br>
+   1.1 RUN **BACKUP CI**
+   ```
+   gh workflow run "BACKUP CI" --ref <branch_name>
+   ```
+   1.2 RUN **BACKEND CI**
+   ```
+   gh workflow run "BACKEND CI" --ref <branch_name>
+   ```
+   1.3 RUN **NGINX CI**
+   ```
+   gh workflow run "NGINX CI" --ref <branch_name>
+   ```
+   1.3 RUN **FRONTEND CI**
+   ```
+   gh workflow run "FRONTEND CI" --ref <branch_name>
+   ```
