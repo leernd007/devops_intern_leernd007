@@ -23,8 +23,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/upload-artifact@v2
+      - uses: ishworkh/container-image-artifact-upload@v1.0.0
         with:
-          name: nginx-docker-image-${{ github.run_id }}
-          path: nginx
+          image: "nginx_devops:latest"
           retention-days: 1
