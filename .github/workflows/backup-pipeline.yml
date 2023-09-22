@@ -14,10 +14,10 @@ on:
       - 'nginx/**'
       - '.github/workflows/**'
   workflow_dispatch:
-       inputs:
-         - name: Print puppy type
-           id: printPuppyType
-           run: echo The puppy is ${{ github.event.inputs.puppy }}
+     inputs:
+       - name: Print puppy type
+         id: printPuppyType
+         run: echo The puppy is ${{ github.event.inputs.puppy }}
 jobs:
   build-and-test:
     permissions:
