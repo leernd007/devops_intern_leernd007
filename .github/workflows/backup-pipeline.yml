@@ -14,13 +14,8 @@ on:
       - 'nginx/**'
       - '.github/workflows/**'
 jobs:
-  download:
+  backup:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
-      actions: read
     steps:
       - uses: actions/checkout@v2
       - uses: dawidd6/action-download-artifact@v2
@@ -29,34 +24,15 @@ jobs:
           workflow_conclusion: success
           name: versions-artifact
           if_no_artifact_found: warn
-  update:
-    runs-on: ubuntu-latest
-    needs: download
-    steps:
-      - uses: actions/checkout@v2
       - run: |
           if [ -f versions.json ]; then
             mkdir -p ~/backup
             mv versions.json ~/backup
           fi
-  run:
-    runs-on: ubuntu-latest
-    needs: update
-    steps:
-      - uses: actions/checkout@v2
       - run: ./backup.sh
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
       - uses: actions/upload-artifact@master
-        with:
-          name: backup-artifact
-          path: ~/backup/
-  save:
-    runs-on: ubuntu-latest
-    needs: run
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@master
         with:
           name: backup-artifact
           path: ~/backup/
