@@ -22,6 +22,12 @@ on:
       - 'nginx/**'
       - '.github/workflows/**'
 jobs:
+  printInputs:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Log level: ${{ github.event.inputs.logLevel }}"
+          echo "Tags: ${{ github.event.inputs.tags }}"
   build-and-test:
     runs-on: ubuntu-latest
     steps:
