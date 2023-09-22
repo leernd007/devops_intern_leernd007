@@ -1,10 +1,6 @@
 name: BACKUP CI
 
 on:
-  workflow_run:
-    workflows: [ "BACKUP CI" ]  # Specify the name of the workflow you depend on
-    types:
-      - completed
   workflow_dispatch:
   push:
     paths-ignore:
@@ -28,18 +24,6 @@ jobs:
       - name: continue-on-error Comment
         uses: mainmatter/continue-on-error-comment@v1
 #        continue-on-error: true
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        continue-on-error: true
-        with:
-          name: versions-artifact
-          path: ~/
-
-      - name: Use Downloaded Artifacts
-        run: |
-          ls ~/
-
 
       - name: Run backup execution
         run: ./backup.sh
