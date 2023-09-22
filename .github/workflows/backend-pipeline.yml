@@ -1,4 +1,4 @@
-name: BACKEND CI
+name: backend-pipeline.yml
 
 on:
   workflow_dispatch:
