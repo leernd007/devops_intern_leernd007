@@ -29,7 +29,7 @@ jobs:
         continue-on-error: true
         with:
           path: ~/versions.json
-          key: ${{ runner.os }}-my-cache-${{ hashFiles(...) }}
+          key: ${{ runner.os }}-my-cache-${{ hashFiles(versions.json) }}
       - run: |
           if [ -f ~/versions.json ]; then
             cat ~/versions.json
