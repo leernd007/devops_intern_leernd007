@@ -24,9 +24,12 @@ jobs:
       - name: continue-on-error Comment
         uses: mainmatter/continue-on-error-comment@v1
 
-      - name: LS backup
-        run: ls ~/backup
-        continue-on-error: true
+      - uses: actions/cache@v2
+        id: restore-build
+        with:
+          path: ~/backup
+          key: ${{ runner.os }}-my-cache
+      - run: ls ~/backup
 
 #      - name: Retrieve Cache
 #        uses: actions/cache@v3
@@ -65,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: backup-artifact
-          path: ~/backup/*tar.gz
+          path: ~/backup
           retention-days: 5
 
       - name: Save versions.json as Artifact
