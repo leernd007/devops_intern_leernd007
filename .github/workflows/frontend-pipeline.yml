@@ -1,4 +1,4 @@
-name: nginx-pipeline.yml
+name: FRONTEND CI
 
 on:
   workflow_dispatch:

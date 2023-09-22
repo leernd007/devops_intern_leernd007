@@ -1,4 +1,4 @@
-name: backup-pipeline.yml
+name: BACKUP CI
 
 on:
   workflow_dispatch:
