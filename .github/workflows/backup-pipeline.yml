@@ -32,6 +32,7 @@ jobs:
           workflow: backup-pipeline.yml
           workflow_conclusion: success
           name: versions-artifact
+          if_no_artifact_found: warn
 
       - name: Update versions.json
         run: |
