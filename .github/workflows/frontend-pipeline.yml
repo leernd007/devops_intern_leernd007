@@ -3,6 +3,8 @@ name: FRONTEND CI
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - 'frontend/**'
   pull_request:
