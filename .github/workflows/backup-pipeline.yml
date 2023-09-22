@@ -1,9 +1,10 @@
 name: BACKUP CI
 on:
   workflow_dispatch:
-    branches:
-      - master
   push:
+    branches:
+      - main
+      - DO_3
     paths-ignore:
       - 'app/**'
       - 'frontend/**'
