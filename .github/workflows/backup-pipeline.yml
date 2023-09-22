@@ -2,13 +2,6 @@ name: BACKUP CI
 
 on:
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
   push:
     paths-ignore:
       - 'app/**'
@@ -22,12 +15,11 @@ on:
       - 'nginx/**'
       - '.github/workflows/**'
 jobs:
-  printInputs:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "Log level: ${{ github.event.inputs.logLevel }}"
-          echo "Tags: ${{ github.event.inputs.tags }}"
+          echo "We did it"
   build-and-test:
     runs-on: ubuntu-latest
     steps:
