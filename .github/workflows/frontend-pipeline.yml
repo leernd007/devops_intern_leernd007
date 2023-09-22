@@ -32,14 +32,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: docker build -t fe_devops:latest .
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          tags: nginx_devops:latest
+          outputs: type=docker,dest=/tmp/fe_devops.tar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: fe_devops
+          path: /tmp/fe_devops.tar
   save:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v3
+        with:
+          name: nginx_devops
+          path: /tmp/fe_devops.tar
       - uses: actions/upload-artifact@v2
         with:
           name: fe_devops
-          path: frontend
+          path: /tmp/fe_devops.tar
           retention-days: 1
