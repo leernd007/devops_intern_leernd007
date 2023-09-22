@@ -21,36 +21,40 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-#      - name: continue-on-error Comment
-#        uses: mainmatter/continue-on-error-comment@v1
+      - name: continue-on-error Comment
+        uses: mainmatter/continue-on-error-comment@v1
 
-      - name: Retrieve Cache
-        uses: actions/cache@v3
-        with:
-          path: ~/backup
-          key: ${{ runner.os }}-my-cache
+      - name: LS backup
+        run: ls ~/backup
+        continue-on-error: true
 
-      - name: Copy Files from Previous Artifact
-        run: |
-          mkdir -p ~/tmp-backup
-          cp -r ~/backup/*.tar.gz ~/tmp-backup/
-          ls ~/tmp-backup/
+#      - name: Retrieve Cache
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/backup
+#          key: ${{ runner.os }}-my-cache
+
+#      - name: Copy Files from Previous Artifact
+#        run: |
+#          mkdir -p ~/tmp-backup
+#          cp -r ~/backup/*.tar.gz ~/tmp-backup/
+#          ls ~/tmp-backup/
 
       - name: Run backup execution
         run: ./backup.sh
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
-      - name: Copy Files from Previous Artifact v2
-        run: |
-          cp -r ~/tmp-backup/*.tar.gz ~/backup/
-          ls ~/tmp-backup/
-          rm -rf ~/tmp-backup
+#      - name: Copy Files from Previous Artifact v2
+#        run: |
+#          cp -r ~/tmp-backup/*.tar.gz ~/backup/
+#          ls ~/tmp-backup/
+#          rm -rf ~/tmp-backup
 
       - name: Save Cache
         uses: actions/cache@v3
         with:
-          path: ~/backup
+          path: ~/backup/versions.json
           key: ${{ runner.os }}-my-cache
 
       - name: Build Docker Image
@@ -61,5 +65,12 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: backup-artifact
-          path: ~/backup
+          path: ~/backup/*tar.gz
+          retention-days: 5
+
+      - name: Save versions.json as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: versions-artifact
+          path: ~/backup/versions.json
           retention-days: 5
