@@ -12,20 +12,12 @@ defaults:
   run:
     working-directory: ./nginx
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: docker build -t nginx_devops:latest .
-
-  save:
+  build_and_upload:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - uses: actions/checkout@v4
-      - uses: ishworkh/container-image-artifact-download@v1.0.0
-        with:
-          image: "nginx_devops:latest"
+      - run: docker build -t nginx_devops:latest .
       - uses: ishworkh/container-image-artifact-upload@v1.0.0
         with:
           image: "nginx_devops:latest"
