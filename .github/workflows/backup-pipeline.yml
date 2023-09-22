@@ -23,57 +23,24 @@ jobs:
 
       - name: continue-on-error Comment
         uses: mainmatter/continue-on-error-comment@v1
+#        continue-on-error: true
 
-      - uses: actions/cache@v2
-        id: restore-build
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
         continue-on-error: true
         with:
-          path: ~/versions.json
-          key: ${{ runner.os }}-my-cache-${{ hashFiles('~/versions.json') }}
-      - run: |
-          ls
-          pwd
-          if [ -f ~/versions.json ]; then
-            cat ~/versions.json
-            mkdir -p ~/backup
-            mv ~/versions.json ~/backup/versions.json
-          fi
+          name: versions-artifact
+          path: ~/
 
-#      - name: Retrieve Cache
-#        uses: actions/cache@v3
-#        with:
-#          path: ~/backup
-#          key: ${{ runner.os }}-my-cache
+      - name: Use Downloaded Artifacts
+        run: |
+          ls ~/
 
-#      - name: Copy Files from Previous Artifact
-#        run: |
-#          mkdir -p ~/tmp-backup
-#          cp -r ~/backup/*.tar.gz ~/tmp-backup/
-#          ls ~/tmp-backup/
 
       - name: Run backup execution
         run: ./backup.sh
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
-
-#      - name: Copy Files from Previous Artifact v2
-#        run: |
-#          cp -r ~/tmp-backup/*.tar.gz ~/backup/
-#          ls ~/tmp-backup/
-#          rm -rf ~/tmp-backup
-      - name: Copy versions.json
-        run: |
-          cp -rf ~/backup/versions.json ~/versions.json
-          cat ~/backup/versions.json
-
-      - name: Save Cache
-        uses: actions/cache@v3
-        with:
-          path: ~/versions.json
-          key: ${{ runner.os }}-my-cache-${{ hashFiles('~/versions.json') }}
-
-      - name: cat version
-        run: cat ~/backup/versions.json
 
       - name: Save Docker Image as Artifact
         uses: actions/upload-artifact@v2
