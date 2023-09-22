@@ -1,11 +1,6 @@
 name: BACKUP CI
 
 on:
-  permissions:
-    id-token: write
-    contents: read
-    pull-requests: write
-    actions: read
   workflow_dispatch:
   push:
     paths-ignore:
@@ -21,6 +16,11 @@ on:
       - '.github/workflows/**'
 jobs:
   build-and-test:
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      actions: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
