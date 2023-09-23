@@ -1,4 +1,5 @@
 name: Backup. Create and push to artifacts
+run-name: Backup. Create and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
   push:

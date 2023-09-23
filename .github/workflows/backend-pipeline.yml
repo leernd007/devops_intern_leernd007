@@ -1,5 +1,5 @@
 name: Backend. Test, build and push to artifacts
-
+run-name: Backend. Test, build and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
   push:
