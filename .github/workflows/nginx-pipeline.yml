@@ -1,5 +1,5 @@
 name: Nginx. Build and push to artifacts
-
+run-name: Nginx. Build and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
   push:
