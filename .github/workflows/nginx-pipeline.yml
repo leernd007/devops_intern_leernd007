@@ -45,6 +45,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Remove old archive (only for self-hosted runner)
+        run: rm -rf /tmp/nginx_devops.tar
+
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
