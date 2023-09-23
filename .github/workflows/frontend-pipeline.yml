@@ -15,7 +15,8 @@ defaults:
     working-directory: frontend
 jobs:
   test:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -39,7 +40,8 @@ jobs:
 
   build:
     needs: test
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -61,7 +63,8 @@ jobs:
           path: /tmp/fe_devops.tar
   save:
     needs: build
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

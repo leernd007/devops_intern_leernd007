@@ -15,7 +15,8 @@ defaults:
     working-directory: ./nginx
 jobs:
   build:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -37,7 +38,8 @@ jobs:
           path: /tmp/nginx_devops.tar
 
   save:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
     steps:
       - name: Checkout code
