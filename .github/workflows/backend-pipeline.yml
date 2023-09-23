@@ -19,7 +19,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: LS
-        run: echo "This job runs on ${{ jobs.build-linux.runs-on }}"
+        run: echo "This job runs on ${{ github.jobs.build-linux.runs-on }}"
 
       - name: Checkout code
         uses: actions/checkout@v4
