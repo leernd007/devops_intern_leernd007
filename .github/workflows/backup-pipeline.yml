@@ -42,7 +42,7 @@ jobs:
           retention-days: 5
 
       - name: Upload versions.json
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: versions-artifact
           path: ~/backup/versions.json
