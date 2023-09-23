@@ -1,4 +1,4 @@
-name: BACKUP CI
+name: Backup. Create and push to artifacts
 on:
   workflow_dispatch:
   push:

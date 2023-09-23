@@ -1,4 +1,4 @@
-name: FRONTEND CI
+name: Frontend. Test, build and push to artifacts
 
 on:
   workflow_dispatch:
