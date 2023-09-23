@@ -41,6 +41,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Remove old archive (only for self-hosted runner)
+        run: rm -rf /tmp/be_devops.tar
+
       - name: Build docker container
         uses: docker/build-push-action@v5
         with:
@@ -61,9 +64,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Remove old archive (only for self-hosted runner)
-        run: rm -rf /tmp/be_devops.tar
 
       - name: Download artifact
         uses: actions/download-artifact@v3
