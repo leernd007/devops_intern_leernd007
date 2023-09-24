@@ -65,13 +65,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check if an artifact already exists (only for self-hosted runner)
+        id: check_if_exists
+        run: |
+          if [[ -f /tmp/be_devops.tar ]]; then
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
+
       - name: Download artifact
+        if: needs.build.outputs.exists == 'false'
         uses: actions/download-artifact@v3
         with:
           name: be_devops
           path: /tmp/be_devops.tar
 
       - name: Upload artifact
+        if: needs.build.outputs.exists == 'false'
         uses: actions/upload-artifact@v2
         with:
           name: be_devops
