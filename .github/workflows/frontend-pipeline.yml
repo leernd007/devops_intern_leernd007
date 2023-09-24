@@ -40,8 +40,8 @@ jobs:
 
   build:
     needs: test
-    runs-on: ubuntu-latest
-#    runs-on: self-hosted
+#    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -69,16 +69,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-#      - name: Remove old archive (only for self-hosted runner)
-#        run: rm -rf /tmp/fe_devops.tar
+      - name: Check if an artifact already exists (only for self-hosted runner)
+        id: check_if_exists
+        run: |
+          if [[ -f /tmp/fe_devops.tar ]]; then
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
 
       - name: Download artifact
+        if: needs.build.outputs.exists == 'false'
         uses: actions/download-artifact@v3
         with:
           name: fe_devops
           path: /tmp/fe_devops.tar
 
       - name: Upload artifact
+        if: needs.build.outputs.exists == 'false'
         uses: actions/upload-artifact@v2
         with:
           name: fe_devops
