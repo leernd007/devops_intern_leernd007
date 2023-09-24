@@ -26,8 +26,6 @@ jobs:
         with:
           python-version: 3.11
       - run: |
-          ls
-          pwd
           pip install -r requirements.txt
           pip install flake8 pytest httpx pytest-mock
           flake8 .
