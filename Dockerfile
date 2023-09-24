@@ -10,5 +10,4 @@ RUN apk update \
 WORKDIR /app
 COPY ./backup.sh .
 
-
 CMD ["./backup.sh"]
