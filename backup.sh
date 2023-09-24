@@ -27,7 +27,7 @@ create_archive() {
   archiveName="devops_internship_$(get_archiveVersion).tar.gz"
   version="$(get_archiveVersion)"
 
-  cd "$SCRIPT_DIR/$repo_name" && tar --exclude=".git" -czvf "$archiveName" .  >/dev/null 2>&1
+  cd "$SCRIPT_DIR/$repo_name" && tar --exclude=".git" -czvf "$archiveName" *  >/dev/null 2>&1
   mv $archiveName ~/$BACKUP_FOLDER
   file_size=$(stat -c %s ~/$BACKUP_FOLDER/$archiveName)
 
