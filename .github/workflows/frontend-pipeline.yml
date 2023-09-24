@@ -38,7 +38,7 @@ jobs:
           npm ci
           npm run test:ci
 
-  build:
+  build_and_deploy:
     needs: test
 #    runs-on: ubuntu-latest
     runs-on: self-hosted
@@ -57,36 +57,6 @@ jobs:
           outputs: type=docker,dest=/tmp/fe_devops.tar
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: fe_devops
-          path: /tmp/fe_devops.tar
-  save:
-    needs: build
-    runs-on: ubuntu-latest
-#    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check if an artifact already exists (only for self-hosted runner)
-        id: check_if_exists
-        run: |
-          if [[ -f /tmp/fe_devops.tar ]]; then
-            echo "::set-output name=exists::true"
-          else
-            echo "::set-output name=exists::false"
-          fi
-
-      - name: Download artifact
-        if: needs.build.outputs.exists == 'false'
-        uses: actions/download-artifact@v3
-        with:
-          name: fe_devops
-          path: /tmp/fe_devops.tar
-
-      - name: Upload artifact
-        if: needs.build.outputs.exists == 'false'
         uses: actions/upload-artifact@v2
         with:
           name: fe_devops

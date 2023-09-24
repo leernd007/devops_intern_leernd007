@@ -30,7 +30,7 @@ jobs:
           pip install flake8 pytest httpx pytest-mock
           flake8 .
           pytest tests/
-  build:
+  build_and_deploy:
     needs: test
 #    runs-on: ubuntu-latest
     runs-on: self-hosted
@@ -41,8 +41,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-#      - name: Remove old archive (only for self-hosted runner)
-#        run: rm -rf /tmp/be_devops.tar
+      - name: Remove old archive (only for self-hosted runner)
+        run: rm -rf /tmp/be_devops.tar
 
       - name: Build docker container
         uses: docker/build-push-action@v5
@@ -52,37 +52,6 @@ jobs:
           outputs: type=docker,dest=/tmp/be_devops.tar
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: be_devops
-          path: /tmp/be_devops.tar
-
-  save:
-    needs: build
-#    runs-on: ubuntu-latest
-    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check if an artifact already exists (only for self-hosted runner)
-        id: check_if_exists
-        run: |
-          if [[ -f /tmp/be_devops.tar ]]; then
-            echo "::set-output name=exists::true"
-          else
-            echo "::set-output name=exists::false"
-          fi
-
-      - name: Download artifact
-        if: needs.build.outputs.exists == 'false'
-        uses: actions/download-artifact@v3
-        with:
-          name: be_devops
-          path: /tmp/be_devops.tar
-
-      - name: Upload artifact
-        if: needs.build.outputs.exists == 'false'
         uses: actions/upload-artifact@v2
         with:
           name: be_devops
