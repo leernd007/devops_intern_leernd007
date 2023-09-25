@@ -29,7 +29,7 @@ jobs:
       - name: Install chromium browser
         run: |
           sudo apt update
-          sudo apt install -y chromium-browser
+          sudo snap install chromium
 
       - name: Run npm tests
         run: |
@@ -37,6 +37,8 @@ jobs:
           npm run lint
           npm ci
           npm run test:ci
+        env:
+          CHROME_BIN: /snap/bin/chromium
 
   build_and_deploy:
     needs: test
