@@ -37,6 +37,8 @@ jobs:
           npm run lint
           npm ci
           npm run test:ci
+        env:
+          CHROME_BIN: /snap/bin/chromium
 
   build_and_deploy:
     needs: test
