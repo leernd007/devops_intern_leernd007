@@ -14,7 +14,7 @@ defaults:
   run:
     working-directory: ./nginx
 jobs:
-  build:
+  build_and_save:
     runs-on: ubuntu-20.04
 #    runs-on: self-hosted
     steps:
@@ -33,37 +33,6 @@ jobs:
 
       - name: Upload docker artifact
         uses: actions/upload-artifact@v3
-        with:
-          name: nginx_devops
-          path: /tmp/nginx_devops.tar
-
-  save:
-    runs-on: ubuntu-20.04
-#    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check if an artifact already exists (only for self-hosted runner)
-        id: check_if_exists
-        run: |
-          if [[ -f /tmp/nginx_devops.tar ]]; then
-            echo "::set-output name=exists::true"
-          else
-            echo "::set-output name=exists::false"
-          fi
-
-      - name: Download artifact
-        if: steps.check_if_exists.outputs.exists == 'false'
-        uses: actions/download-artifact@v3
-        with:
-          name: nginx_devops
-          path: /tmp/nginx_devops.tar
-
-      - name: Upload artifact
-        if: steps.check_if_exists.outputs.exists == 'false'
-        uses: actions/upload-artifact@v2
         with:
           name: nginx_devops
           path: /tmp/nginx_devops.tar
