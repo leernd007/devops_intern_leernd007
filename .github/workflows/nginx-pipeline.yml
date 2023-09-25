@@ -1,0 +1,3 @@
+name: Nginx. Build and push to artifacts
+on:
+  workflow_dispatch:
