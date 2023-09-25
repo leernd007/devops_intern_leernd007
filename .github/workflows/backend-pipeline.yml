@@ -1,2 +1,3 @@
+name: Backend. Test, build and push to artifacts
 on:
   workflow_dispatch:
