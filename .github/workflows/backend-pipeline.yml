@@ -15,8 +15,8 @@ defaults:
     working-directory: app
 jobs:
   test:
-#    runs-on: ubuntu-20.04
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
+#    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,8 +32,8 @@ jobs:
           pytest tests/
   build_and_deploy:
     needs: test
-#    runs-on: ubuntu-20.04
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
+#    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
