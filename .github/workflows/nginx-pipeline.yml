@@ -15,7 +15,7 @@ defaults:
     working-directory: ./nginx
 jobs:
   build:
-#    runs-on: ubuntu-latest
+#    runs-on: ubuntu-20.04
     runs-on: self-hosted
     steps:
       - name: Checkout code
@@ -39,7 +39,7 @@ jobs:
 
   save:
     runs-on: ubuntu-latest
-#    runs-on: self-hosted
+#    runs-on: self-20.04
     needs: build
     steps:
       - name: Checkout code
