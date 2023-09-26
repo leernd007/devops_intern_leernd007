@@ -3,20 +3,15 @@ run-name: Nginx. Build and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
     inputs:
-      name:
+      runs_on:
         type: choice
-        description: Who to greet
+        description: Runs-on
         options:
           - ubuntu-20.04
           - self-hosted
-      message:
-        required: true
-      use-emoji:
-        type: boolean
-        description: Include 🎉🤣 emojis
-      environment:
-        type: environment
   push:
+    branches:
+      - main
     paths:
       - 'nginx/**'
   pull_request:
