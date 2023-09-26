@@ -2,6 +2,13 @@ name: Backend. Test, build and push to artifacts
 run-name: Backend. Test, build and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
+    inputs:
+      runs_on:
+        type: choice
+        description: Runs-on
+        options:
+          - ubuntu-20.04
+          - self-hosted
   push:
     branches:
       - main
@@ -15,8 +22,7 @@ defaults:
     working-directory: app
 jobs:
   test:
-    runs-on: ubuntu-20.04
-#    runs-on: self-hosted
+    runs-on: ${{ github.event.inputs.runs_on }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,8 +38,7 @@ jobs:
           pytest tests/
   build_and_deploy:
     needs: test
-    runs-on: ubuntu-20.04
-#    runs-on: self-hosted
+    runs-on: ${{ github.event.inputs.runs_on }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -43,6 +48,7 @@ jobs:
 
       - name: Remove old archive (only for self-hosted runner)
         run: rm -rf /tmp/be_devops.tar
+        if: ${{ github.event.inputs.runs_on == 'self-hosted' }}
 
       - name: Build docker container
         uses: docker/build-push-action@v5

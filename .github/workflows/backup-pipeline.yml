@@ -2,14 +2,20 @@ name: Backup. Create and push to artifacts
 run-name: Backup. Create and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
+    inputs:
+      runs_on:
+        type: choice
+        description: Runs-on
+        options:
+          - ubuntu-20.04
+          - self-hosted
   push:
     branches:
       - main
   pull_request:
 jobs:
   backup:
-    runs-on: ubuntu-20.04
-#    runs-on: self-hosted
+    runs-on: ${{ github.event.inputs.runs_on }}
     permissions:
       id-token: write
       contents: read
