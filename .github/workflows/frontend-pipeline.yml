@@ -22,7 +22,7 @@ defaults:
     working-directory: frontend
 jobs:
   test:
-    runs-on: ${{ github.event.inputs.runs_on }}
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -48,7 +48,7 @@ jobs:
 
   build_and_deploy:
     needs: test
-    runs-on: ${{ github.event.inputs.runs_on }}
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

@@ -15,7 +15,7 @@ on:
   pull_request:
 jobs:
   backup:
-    runs-on: ${{ github.event.inputs.runs_on }}
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
     permissions:
       id-token: write
       contents: read
