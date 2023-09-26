@@ -22,7 +22,7 @@ defaults:
     working-directory: ./nginx
 jobs:
   build_and_save:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ github.event.inputs.runs_on }}
 #    runs-on: self-hosted
     steps:
       - name: Checkout code
