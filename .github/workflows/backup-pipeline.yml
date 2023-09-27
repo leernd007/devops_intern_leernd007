@@ -48,13 +48,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: backup-artifact
+          name: backup-artifact-${{github.sha}}
           path: ~/backup/*tar.gz
           retention-days: 5
 
       - name: Upload versions.json
         uses: actions/upload-artifact@v2
         with:
-          name: versions-artifact
+          name: versions-artifact-${{github.sha}}
           path: ~/backup/versions.json
           retention-days: 5

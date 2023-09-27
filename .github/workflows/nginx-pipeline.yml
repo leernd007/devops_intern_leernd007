@@ -40,6 +40,6 @@ jobs:
       - name: Upload docker artifact
         uses: actions/upload-artifact@v3
         with:
-          name: nginx_devops
+          name: nginx_devops-${{github.sha}}
           path: /tmp/nginx_devops.tar
           retention-days: 1

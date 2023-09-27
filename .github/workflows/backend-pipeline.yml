@@ -60,6 +60,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: be_devops
+          name: be_devops-${{github.sha}}
           path: /tmp/be_devops.tar
           retention-days: 1
