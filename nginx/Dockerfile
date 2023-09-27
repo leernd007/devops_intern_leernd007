@@ -8,4 +8,3 @@ RUN apt-get update \
       && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD nginx.conf /etc/nginx/conf.d/default.conf
-

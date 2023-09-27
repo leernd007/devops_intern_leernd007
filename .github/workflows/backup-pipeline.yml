@@ -1,3 +1,5 @@
+name: Backup. Create and push to artifacts
+run-name: Backup. Create and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
     inputs:
@@ -7,3 +9,52 @@ on:
         options:
           - ubuntu-20.04
           - self-hosted
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  backup:
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: backup-pipeline.yml
+          workflow_conclusion: success
+          name: versions-artifact
+          if_no_artifact_found: warn
+
+      - name: Versions mechanism
+        run: |
+          if [ -f versions.json ]; then
+            mkdir -p ~/backup
+            mv versions.json ~/backup
+          fi
+
+      - name: Run backup
+        run: ./backup.sh
+        env:
+          SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: backup-artifact-${{github.sha}}
+          path: ~/backup/*tar.gz
+          retention-days: 5
+
+      - name: Upload versions.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: versions-artifact-${{github.sha}}
+          path: ~/backup/versions.json
+          retention-days: 5

@@ -1,3 +1,5 @@
+name: Nginx. Build and push to artifacts
+run-name: Nginx. Build and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
     inputs:
@@ -7,3 +9,37 @@ on:
         options:
           - ubuntu-20.04
           - self-hosted
+  push:
+    branches:
+      - main
+    paths:
+      - 'nginx/**'
+  pull_request:
+    paths:
+      - 'nginx/**'
+defaults:
+  run:
+    working-directory: ./nginx
+jobs:
+  build_and_save:
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build docker container
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          tags: nginx_devops:latest
+          outputs: type=docker,dest=/tmp/nginx_devops.tar
+
+      - name: Upload docker artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nginx_devops-${{github.sha}}
+          path: /tmp/nginx_devops.tar
+          retention-days: 1

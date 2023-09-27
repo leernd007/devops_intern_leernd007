@@ -1,3 +1,5 @@
+name: Backend. Test, build and push to artifacts
+run-name: Backend. Test, build and push to artifacts. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
     inputs:
@@ -7,3 +9,57 @@ on:
         options:
           - ubuntu-20.04
           - self-hosted
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+  pull_request:
+    paths:
+      - 'app/**'
+defaults:
+  run:
+    working-directory: app
+jobs:
+  test:
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - run: |
+          pip install -r requirements.txt
+          pip install flake8 pytest httpx pytest-mock
+          flake8 .
+          pytest tests/
+  build_and_deploy:
+    needs: test
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Remove old archive (only for self-hosted runner)
+        run: rm -rf /tmp/be_devops.tar
+        if: ${{ github.event.inputs.runs_on == 'self-hosted' }}
+
+      - name: Build docker container
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          tags: be_devops:latest
+          outputs: type=docker,dest=/tmp/be_devops.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: be_devops-${{github.sha}}
+          path: /tmp/be_devops.tar
+          retention-days: 1
