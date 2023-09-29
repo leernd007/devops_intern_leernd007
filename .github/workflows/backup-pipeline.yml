@@ -43,16 +43,17 @@ jobs:
         run: |
           mkdir -p ~/backup
           mv versions.txt ~/backup >/dev/null 2>&1
-          ./backup.sh
-          mv ~/backup ./
-        env:
-          SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
+          ls
+          echo ----
+          ls ~/backup
+#          ./backup.sh
+#          mv ~/backup ./
 
       - name: Upload backup to ACR
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./backup -c ${{ env.CONTAINER_NAME }}  -n versions.json --overwrite true
+            az storage blob upload-batch --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login --source ./backup --destination ${{ env.CONTAINER_NAME }}  --overwrite true
 
       - run: rm -rf ./backup
 
