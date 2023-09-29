@@ -1,0 +1,53 @@
+name: Backup. Create and push to Azure Storage account
+run-name: Backup. Create and push to Azure Storage account. Commit hash ${{github.sha}}
+on:
+  workflow_dispatch:
+    inputs:
+      runs_on:
+        type: choice
+        description: Runs-on
+        options:
+          - ubuntu-20.04
+          - self-hosted
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  backup:
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      actions: read
+    env:
+      ACCOUNT_NAME: 'leerndstoragename'
+      CONTAINER_NAME: 'devops-intern-leernd007'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Install AZ Copy
+        uses: kheiakiyama/install-azcopy-action@v1
+        with:
+          version: 'v10'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - run: |
+          mkdir -p ~/backup
+          cd ~/backup && azcopy copy ${{ secrets.CONNECTION_STRING }}/versions.json 'versions.json' || true
+
+      - name: Run backup
+        run: ./backup.sh
+        env:
+          SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
+
+      - name: Upload to Storage Account
+        run: |
+          cd ~/ && azcopy sync backup ${{ secrets.CONNECTION_STRING }} --recursive
