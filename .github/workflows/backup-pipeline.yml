@@ -45,16 +45,14 @@ jobs:
           mv versions.json ~/backup || true
           ./backup.sh
           mv ~/backup ./
+        env:
+          SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
-      - run: |
-          ls
-          ls backup
+      - name: Upload backup to ACR
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login --source ./backup --destination ${{ env.CONTAINER_NAME }}  --overwrite true
 
-#      - name: Upload backup to ACR
-#        uses: azure/CLI@v1
-#        with:
-#          inlineScript: |
-#            az storage blob upload-batch --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login --source ./backup --destination ${{ env.CONTAINER_NAME }}  --overwrite true
-#
-#      - run: rm -rf ./backup
+      - run: rm -rf ./backup
 
