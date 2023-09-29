@@ -48,12 +48,6 @@ jobs:
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
-#      - name: Install AZ Copy
-#        uses: kheiakiyama/install-azcopy-action@v1
-#        with:
-#          version: 'v10'
-#          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Upload backup to ACR
         uses: azure/CLI@v1
         with:
@@ -61,4 +55,26 @@ jobs:
             az storage blob upload-batch --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login --source ./backup --destination ${{ env.CONTAINER_NAME }}  --overwrite true
 
       - run: rm -rf ./backup
+
+
+#      - name: Install AZ Copy
+#        uses: kheiakiyama/install-azcopy-action@v1
+#        with:
+#          version: 'v10'
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+#      - uses: kheiakiyama/install-azcopy-action@v1
+#        with:
+#          version: 'v10'
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#      - run: |
+#          mkdir -p ~/backup
+#          cd ~/backup && azcopy copy ${{ secrets.CONNECTION_STRING }}/versions.json 'versions.json'
+
+#      - uses: kheiakiyama/install-azcopy-action@v1
+#        with:
+#          version: 'v10'
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#      - run: |
+#          cd ~/ && azcopy sync backup ${{ secrets.CONNECTION_STRING }}--recursive
 

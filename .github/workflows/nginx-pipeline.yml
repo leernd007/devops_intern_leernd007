@@ -41,12 +41,6 @@ jobs:
           login-server: ${{ secrets.REGISTRY_NAME }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-
-      - name: 'Upload to Azure ACR'
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            az acr build --image nginx_devops:latest \
-            --registry ${{secrets.REGISTRY_NAME}} \
-            --file Dockerfile .
+      - run: |
+          docker build . -t ${{ secrets.REGISTRY_NAME }}/nginx_devops:latest
+          docker push ${{ secrets.REGISTRY_NAME }}/nginx_devops:latest
