@@ -37,16 +37,22 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob download --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./versions.json -c ${{ env.CONTAINER_NAME }}  -n versions.json
+            az storage blob download --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./versions.json -c ${{ env.CONTAINER_NAME }}  -n versions.json || true
 
       - name: Run backup
-        run: ./backup.sh
+        run: |
+          mkdir -p ~/backup
+          mv versions.txt ~/backup >/dev/null 2>&1
+          ./backup.sh
+          mv ~/backup ./
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
-      - name: Download versions.json
+      - name: Upload backup to ACR
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            ls
-            ls ~/backup
+            az storage blob upload --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./backup -c ${{ env.CONTAINER_NAME }}  -n versions.json --overwrite true
+
+      - run: rm -rf ./backup
+
