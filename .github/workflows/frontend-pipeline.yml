@@ -60,10 +60,9 @@ jobs:
           login-server: ${{ secrets.REGISTRY_NAME }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-          inlineScript: |
-            az acr build --image fe_devops:latest \
-            --registry ${{secrets.REGISTRY_NAME}} \
-            --file Dockerfile .
+      - run: |
+          docker build . -t ${{ secrets.REGISTRY_NAME }}/fe_devops:latest
+          docker push ${{ secrets.REGISTRY_NAME }}/fe_devops:latest
 
 #      - name: 'Build and upload to Azure ACR'
 #        uses: azure/CLI@v1
