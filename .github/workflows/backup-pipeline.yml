@@ -33,21 +33,26 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Install AZ Copy
-        uses: kheiakiyama/install-azcopy-action@v1
+      - name: Download versions.json
+        uses: azure/CLI@v1
         with:
-          version: 'v10'
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - run: |
-          mkdir -p ~/backup
-          cd ~/backup && azcopy copy ${{ secrets.CONNECTION_STRING }}/versions.json 'versions.json' || true
+          inlineScript: |
+            az storage blob download --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./versions.json -c ${{ env.CONTAINER_NAME }}  -n versions.json || true
 
       - name: Run backup
-        run: ./backup.sh
+        run: |
+          mkdir -p ~/backup
+          mv versions.json ~/backup || true
+          ./backup.sh
+          mv ~/backup ./
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
-      - name: Upload to Storage Account
-        run: |
-          cd ~/ && azcopy sync backup ${{ secrets.CONNECTION_STRING }} --recursive
+      - name: Upload backup to ACR
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login --source ./backup --destination ${{ env.CONTAINER_NAME }}  --overwrite true
+
+      - run: rm -rf ./backup
+
