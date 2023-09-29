@@ -1,0 +1,78 @@
+name: Frontend. Test, build and push to ACR
+run-name: Frontend. Test, build and push to ACR. Commit hash ${{github.sha}}
+on:
+  workflow_dispatch:
+    inputs:
+      runs_on:
+        type: choice
+        description: Runs-on
+        options:
+          - ubuntu-20.04
+          - self-hosted
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+  pull_request:
+    paths:
+      - 'frontend/**'
+defaults:
+  run:
+    working-directory: frontend
+jobs:
+  test:
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install chromium browser
+        run: |
+          sudo apt-get update
+          sudo snap install chromium
+
+      - name: Run npm tests
+        run: |
+          npm install
+          npm run lint
+          npm ci
+          npm run test:ci
+        env:
+          CHROME_BIN: /snap/bin/chromium
+
+  build_and_deploy:
+    needs: test
+    runs-on: ${{ github.event.inputs.runs_on || 'ubuntu-20.04' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Azure ACR login'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_NAME }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: 'Build and upload to Azure ACR'
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az acr build --image fe_devops:latest \
+            --registry ${{secrets.REGISTRY_NAME}} \
+            --file Dockerfile .
