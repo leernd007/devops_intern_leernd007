@@ -1,5 +1,5 @@
-name: Backup. Create and push to artifacts
-run-name: Backup. Create and push to artifacts. Commit hash ${{github.sha}}
+name: Backup. Create and push to Azure Storage account
+run-name: Backup. Create and push to Azure Storage account. Commit hash ${{github.sha}}
 on:
   workflow_dispatch:
     inputs:
@@ -21,40 +21,60 @@ jobs:
       contents: read
       pull-requests: write
       actions: read
+    env:
+      ACCOUNT_NAME: 'leerndstoragename'
+      CONTAINER_NAME: 'devops-intern-leernd007'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2
+      - name: 'Az CLI login'
+        uses: azure/login@v1
         with:
-          workflow: backup-pipeline.yml
-          workflow_conclusion: success
-          name: versions-artifact
-          if_no_artifact_found: warn
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Versions mechanism
-        run: |
-          if [ -f versions.json ]; then
-            mkdir -p ~/backup
-            mv versions.json ~/backup
-          fi
+      - name: Download versions.json
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob download --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./versions.json -c ${{ env.CONTAINER_NAME }}  -n versions.json || true
 
       - name: Run backup
-        run: ./backup.sh
+        run: |
+          mkdir -p ~/backup
+          mv versions.json ~/backup || true
+          ./backup.sh
+          mv ~/backup ./
         env:
           SSH_PRV_KEY: ${{ secrets.SSH_PRV_KEY }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload backup to ACR
+        uses: azure/CLI@v1
         with:
-          name: backup-artifact-${{github.sha}}
-          path: ~/backup/*tar.gz
-          retention-days: 5
+          inlineScript: |
+            az storage blob upload-batch --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login --source ./backup --destination ${{ env.CONTAINER_NAME }}  --overwrite true
 
-      - name: Upload versions.json
-        uses: actions/upload-artifact@v2
-        with:
-          name: versions-artifact-${{github.sha}}
-          path: ~/backup/versions.json
-          retention-days: 5
+      - run: rm -rf ./backup
+
+
+#      - name: Install AZ Copy
+#        uses: kheiakiyama/install-azcopy-action@v1
+#        with:
+#          version: 'v10'
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+#      - uses: kheiakiyama/install-azcopy-action@v1
+#        with:
+#          version: 'v10'
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#      - run: |
+#          mkdir -p ~/backup
+#          cd ~/backup && azcopy copy ${{ secrets.CONNECTION_STRING }}/versions.json 'versions.json'
+
+#      - uses: kheiakiyama/install-azcopy-action@v1
+#        with:
+#          version: 'v10'
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#      - run: |
+#          cd ~/ && azcopy sync backup ${{ secrets.CONNECTION_STRING }}--recursive
+
