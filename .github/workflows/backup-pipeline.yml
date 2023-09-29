@@ -45,11 +45,7 @@ jobs:
           inlineScript: |
             az storage blob download --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./versions.json -c ${{ env.CONTAINER_NAME }}  -n versions.json
 
-      - name: aaa
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            ls 
+      - run: ls
 
 #      - run: |
 #          mkdir -p ~/backup
