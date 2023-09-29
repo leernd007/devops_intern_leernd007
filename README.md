@@ -38,19 +38,19 @@ http://localhost
 1. Run workflow manually<br>
    1.1 Run **Backup. Create and push to artifacts**
    ```
-   gh workflow run "Backup. Create and push to artifacts" --ref <branch_name>
+   gh workflow run "Backup. Create and push to Azure Storage account" --ref <branch_name>
    ```
    1.2 Run **Backend. Test, build and push to artifacts**
    ```
-   gh workflow run "Backend. Test, build and push to artifacts" --ref <branch_name>
+   gh workflow run "Backend. Test, build and push to ACR" --ref <branch_name>
    ```
    1.3 Run **Nginx. Build and push to artifacts**
    ```
-   gh workflow run "Nginx. Build and push to artifacts" --ref <branch_name>
+   gh workflow run "Nginx. Build and push to ACR" --ref <branch_name>
    ```
    1.3 Run **Frontend. Test, build and push to artifacts**
    ```
-   gh workflow run "Frontend. Test, build and push to artifacts" --ref <branch_name>
+   gh workflow run "Frontend. Test, build and push to ACR" --ref <branch_name>
    ```
 </details>
 
