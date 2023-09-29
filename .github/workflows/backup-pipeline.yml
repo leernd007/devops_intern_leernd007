@@ -42,12 +42,9 @@ jobs:
       - name: Run backup
         run: |
           mkdir -p ~/backup
-          mv versions.txt ~/backup >/dev/null 2>&1
-          ls
-          echo ----
-          ls ~/backup
-#          ./backup.sh
-#          mv ~/backup ./
+          mv versions.json ~/backup || true
+          ./backup.sh
+          mv ~/backup ./
 
       - name: Upload backup to ACR
         uses: azure/CLI@v1
