@@ -45,9 +45,8 @@ jobs:
           inlineScript: |
             mkdir -p ~/backup
             cd ~/backup && az storage blob download --account-name ${{ env.ACCOUNT_NAME }}  --auth-mode login -f ./versions.json -c ${{ env.CONTAINER_NAME }}  -n versions.json
-            cd ~/backup && ls
       
-
+      - run: ls ~/backup
 #      - run: |
 #          mkdir -p ~/backup
 #          cd ~/backup && azcopy copy ${{ secrets.CONNECTION_STRING }}/versions.json 'versions.json' || true
