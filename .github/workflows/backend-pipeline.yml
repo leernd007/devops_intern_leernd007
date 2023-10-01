@@ -60,7 +60,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
           docker build . -t ${{ secrets.REGISTRY_NAME }}/be_devops:latest -t ${{ secrets.REGISTRY_NAME }}/be_devops:${{github.sha}}
-          docker push -all-tags ${{ secrets.REGISTRY_NAME }}/be_devops:latest
+          docker push --all-tags ${{ secrets.REGISTRY_NAME }}/be_devops
 
       - name: Re-deploy backend container on VM host
         uses: appleboy/ssh-action@v1.0.0
