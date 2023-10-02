@@ -160,7 +160,7 @@ docker compose --file docker-compose-prod.yaml  up  -d --build
 2. APP Ip address
 
 ```
-20.79.166.75
+20.79.165.230
 ```
 
 2. APP DNS name
