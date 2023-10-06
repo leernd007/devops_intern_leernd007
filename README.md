@@ -147,25 +147,3 @@ http://localhost
   </tr>
     </table>
 </details>
-
-<details>
-<summary>DO_5 - Deploy the application</summary>
-
-1. Build docker images
-
-```
-docker compose --file docker-compose-prod.yaml  up  -d --build
-```
-
-2. APP Ip address
-
-```
-20.79.165.230
-```
-
-2. APP DNS name
-
-```
-my-virtual-machine-dns.germanywestcentral.cloudapp.azure.com
-```
-</details>
