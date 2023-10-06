@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:11
+    container_name: postgres
+    env_file: .env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - "./pg_data:/var/lib/postgresql/data"
+
+  backend:
+    image: ${REGISTRY_NAME}/be_devops:latest
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    env_file: .env
+    depends_on:
+      - postgres
+  frontend:
+    image: ${REGISTRY_NAME}/fe_devops:latest
+    ports:
+      - "${FRONTEND_PORT}:${NGINX_PORT}"
+    depends_on:
+      - backend
+  nginx:
+    image: ${REGISTRY_NAME}/nginx_devops:latest
+    ports:
+      - "${NGINX_PORT}:${NGINX_PORT}"
+    depends_on:
+      - frontend
