@@ -1,2 +1,6 @@
 .idea/
 .env
+secret.tfvars
+backend.hcl
+.terraform
+.terraform.lock.hcl

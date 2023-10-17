@@ -169,3 +169,23 @@ docker compose --file docker-compose-prod.yaml  up  -d --build
 my-virtual-machine-dns.germanywestcentral.cloudapp.azure.com
 ```
 </details>
+  
+<details>
+<summary>DO_6_1 - Azure + Terrafrom</summary>
+
+1. Rename **secret.tfvars.sample** and **backend.hcl.sample** with without **.sample** sufix and add your own parameters
+2. Init terraform
+
+```
+terraform init -backend-config="backend.hcl"
+```
+
+2. Terraform plan
+
+```
+terraform plan -var-file="secret.tfvars"
+```
+3. Terraform apply
+
+```
+terraform apply -var-file="secret.tfvars"
