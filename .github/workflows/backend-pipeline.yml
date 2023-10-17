@@ -59,5 +59,14 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
-          docker build . -t ${{ secrets.REGISTRY_NAME }}/be_devops:latest
-          docker push ${{ secrets.REGISTRY_NAME }}/be_devops:latest
+          docker build . -t ${{ secrets.REGISTRY_NAME }}/be_devops:latest -t ${{ secrets.REGISTRY_NAME }}/be_devops:${{github.sha}}
+          docker push --all-tags ${{ secrets.REGISTRY_NAME }}/be_devops
+
+      - name: Re-deploy backend container on VM host
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USERNAME }}
+          key: ${{ secrets.VM_PRIVATE_KEY }}
+          script: |
+            cd devops_intern_leernd007 && docker compose --file docker-compose-prod.yaml  up -d --no-deps --build backend
